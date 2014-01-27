@@ -88,7 +88,7 @@ angularCharts.ChartController = function($scope, $element, $templateCache, $comp
             config.click();
         },
         getDimensions: function() {
-            return chartContainer[0].getBoundingClientRect();
+            return chartContainer.parent()[0].getBoundingClientRect();
         },
         getColor: function(i) {
             return angularCharts.utils.colorPicker.getColor(i);

@@ -92,7 +92,7 @@ angularCharts.ChartController = function ($scope, $element, $templateCache, $com
         config.click();
       },
       getDimensions: function () {
-        return chartContainer[0].getBoundingClientRect();
+        return chartContainer.parent()[0].getBoundingClientRect();
       },
       getColor: function (i) {
         return angularCharts.utils.colorPicker.getColor(i);
@@ -621,12 +621,10 @@ angular.module("chart", []).run(["$templateCache", function($templateCache) {
 
 angular.module("legend", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("legend",
-    "<div class='ac-legend'>\n" +
-    "    <table>\n" +
-    "        <tr ng-repeat=\"l in legends\">\n" +
-    "            <td><div ng-attr-style='background:{{l.color}}; height:15px;width:15px;'></div></td>\n" +
-    "            <td ng-bind='l.title'></td>\n" +
-    "        </tr>\n" +
-    "    </table>\n" +
+    "<div class=\"ac-legend\">\n" +
+    "    <div class=\"ac-legend-row\" ng-repeat=\"l in legends\">\n" +
+    "        <div class=\"ac-legend-indicator\" ng-attr-style=\"background:{{l.color}};\"></div>\n" +
+    "        <div class=\"ac-legend-title\" ng-bind=\"l.title\"></div>\n" +
+    "    </div>\n" +
     "</div>");
 }]);
