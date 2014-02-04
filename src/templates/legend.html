@@ -1,8 +1,6 @@
-<div class='ac-legend'>
-    <table>
-        <tr ng-repeat="l in legends">
-            <td><div ng-attr-style='background:{{l.color}}; height:15px;width:15px;'></div></td>
-            <td ng-bind='l.title'></td>
-        </tr>
-    </table>
+<div class="ac-legend">
+    <div class="ac-legend-row" ng-repeat="l in legends">
+        <div class="ac-legend-indicator" ng-attr-style="background:{{l.color}};"></div>
+        <div class="ac-legend-title" ng-bind="l.title"></div>
+    </div>
 </div>

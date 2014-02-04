@@ -23,12 +23,16 @@ angular.module('angularCharts').directive('acLegend', function($templateCache, $
                 $scope.legends = [];
                 if ($scope.acLegend == 'pie') {
                     angular.forEach($scope.acPoints, function(value, i) {
-                        $scope.legends.push({color: angularCharts.utils.colorPicker.getColor(i), title: value.x});
+                        $scope.legends.push({
+                            color: angularCharts.utils.colorPicker.getColor(i, $scope.acConfig.colors || []), 
+                            title: value.x,
+                            data: value
+                        });
                     });
                 }
                 else {
                     angular.forEach($scope.acSeries, function(value, i) {
-                        $scope.legends.push({color: angularCharts.utils.colorPicker.getColor(i), title: value});
+                        $scope.legends.push({color: angularCharts.utils.colorPicker.getColor(i, $scope.acConfig.colors || []), title: value});
                     });
                 }
             }
@@ -38,6 +42,7 @@ angular.module('angularCharts').directive('acLegend', function($templateCache, $
             $scope.$watch('acPoints', draw, true);
         },
         scope: {
+            acConfig: '=',
             acPoints: '=',
             acColors: '=',
             acLegend: '=',

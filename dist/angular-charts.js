@@ -1,14 +1,6 @@
 var angularCharts = angularCharts || {
     utils: {
       colorPicker: {
-        colors: [
-          'steelBlue',
-          'rgb(255,153,0)',
-          'rgb(220,57,18)',
-          'rgb(70,132,238)',
-          'rgb(73,66,204)',
-          'rgb(0,128,0)'
-        ],
         getRandomColor: function () {
           var letters = '0123456789ABCDEF'.split('');
           var color = '#';
@@ -17,16 +9,14 @@ var angularCharts = angularCharts || {
           }
           return color;
         },
-        getColor: function (i) {
+        getColor: function (i, colors) {
           if (isNaN(i)) {
             throw 'Expected a numeric index, got ' + typeof i;
           }
-          if (i < this.colors.length) {
-            return this.colors[i];
+          if (i < colors.length) {
+            return colors[i];
           } else {
-            var color = this.getRandomColor();
-            this.colors.push(color);
-            return color;
+            return this.getRandomColor();
           }
         }
       }
@@ -41,7 +31,12 @@ angularCharts.ChartController = function ($scope, $element, $templateCache, $com
       mouseout: function () {
       },
       click: function () {
-      }
+      },
+      colors: [
+        'red',
+        'white',
+        'blue'
+      ]
     };
   var chartType;
   var chartContainer;
@@ -92,10 +87,10 @@ angularCharts.ChartController = function ($scope, $element, $templateCache, $com
         config.click();
       },
       getDimensions: function () {
-        return chartContainer[0].getBoundingClientRect();
+        return chartContainer.parent()[0].getBoundingClientRect();
       },
       getColor: function (i) {
-        return angularCharts.utils.colorPicker.getColor(i);
+        return angularCharts.utils.colorPicker.getColor(i, config.colors);
       }
     };
   function init() {
@@ -574,14 +569,15 @@ angular.module('angularCharts').directive('acChart', [
             if ($scope.acLegend == 'pie') {
               angular.forEach($scope.acPoints, function (value, i) {
                 $scope.legends.push({
-                  color: angularCharts.utils.colorPicker.getColor(i),
-                  title: value.x
+                  color: angularCharts.utils.colorPicker.getColor(i, $scope.acConfig.colors || []),
+                  title: value.x,
+                  data: value
                 });
               });
             } else {
               angular.forEach($scope.acSeries, function (value, i) {
                 $scope.legends.push({
-                  color: angularCharts.utils.colorPicker.getColor(i),
+                  color: angularCharts.utils.colorPicker.getColor(i, $scope.acConfig.colors || []),
                   title: value
                 });
               });
@@ -593,6 +589,7 @@ angular.module('angularCharts').directive('acChart', [
         }
       ],
       scope: {
+        acConfig: '=',
         acPoints: '=',
         acColors: '=',
         acLegend: '=',
@@ -621,12 +618,10 @@ angular.module("chart", []).run(["$templateCache", function($templateCache) {
 
 angular.module("legend", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("legend",
-    "<div class='ac-legend'>\n" +
-    "    <table>\n" +
-    "        <tr ng-repeat=\"l in legends\">\n" +
-    "            <td><div ng-attr-style='background:{{l.color}}; height:15px;width:15px;'></div></td>\n" +
-    "            <td ng-bind='l.title'></td>\n" +
-    "        </tr>\n" +
-    "    </table>\n" +
+    "<div class=\"ac-legend\">\n" +
+    "    <div class=\"ac-legend-row\" ng-repeat=\"l in legends\">\n" +
+    "        <div class=\"ac-legend-indicator\" ng-attr-style=\"background:{{l.color}};\"></div>\n" +
+    "        <div class=\"ac-legend-title\" ng-bind=\"l.title\"></div>\n" +
+    "    </div>\n" +
     "</div>");
 }]);
