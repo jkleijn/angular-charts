@@ -62,7 +62,7 @@ angularCharts.pieChart = function(chartContainer, helper) {
                 helper.mousemove.call(helper, arguments);
             })
             .on("click", function() {
-                helper.mousemove.call(helper, arguments);
+                helper.click.apply(helper, arguments);
             });
 
     if (!!helper.showLabels) {

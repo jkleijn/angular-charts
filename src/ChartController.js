@@ -10,8 +10,8 @@ var angularCharts = angularCharts || {
                 return color;
             },
             getColor: function(i, colors) {
-                if(isNaN(i)){
-                    throw "Expected a numeric index, got " + typeof(i);
+                if (isNaN(i)) {
+                    throw "Expected a numeric index, got " + typeof (i);
                 }
                 if (i < colors.length) {
                     return colors[i];
@@ -83,7 +83,7 @@ angularCharts.ChartController = function($scope, $element, $templateCache, $comp
             tooltip.update();
         },
         click: function() {
-            config.click();
+            config.click.apply(this, arguments);
         },
         getDimensions: function() {
             return chartContainer.parent()[0].getBoundingClientRect();

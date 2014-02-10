@@ -84,7 +84,7 @@ angularCharts.ChartController = function ($scope, $element, $templateCache, $com
         tooltip.update();
       },
       click: function () {
-        config.click();
+        config.click.apply(this, arguments);
       },
       getDimensions: function () {
         return chartContainer.parent()[0].getBoundingClientRect();
@@ -423,7 +423,7 @@ angularCharts.pieChart = function (chartContainer, helper) {
   }).on('mousemove', function () {
     helper.mousemove.call(helper, arguments);
   }).on('click', function () {
-    helper.mousemove.call(helper, arguments);
+    helper.click.apply(helper, arguments);
   });
   if (!!helper.showLabels) {
     path.append('text').attr('transform', function (d) {
@@ -583,12 +583,16 @@ angular.module('angularCharts').directive('acChart', [
               });
             }
           }
+          $scope.legendClick = function (data) {
+            $scope.onClick(data);
+          };
           $scope.$watch('acLegend', draw, true);
           $scope.$watch('acSeries', draw, true);
           $scope.$watch('acPoints', draw, true);
         }
       ],
       scope: {
+        onClick: '=',
         acConfig: '=',
         acPoints: '=',
         acColors: '=',

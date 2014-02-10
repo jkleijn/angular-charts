@@ -36,12 +36,17 @@ angular.module('angularCharts').directive('acLegend', function($templateCache, $
                     });
                 }
             }
+            
+            $scope.legendClick = function(data){
+                $scope.onClick(data);
+            };
             //add some watchers
             $scope.$watch('acLegend', draw, true);
             $scope.$watch('acSeries', draw, true);
             $scope.$watch('acPoints', draw, true);
         },
         scope: {
+            onClick: '=',
             acConfig: '=',
             acPoints: '=',
             acColors: '=',
